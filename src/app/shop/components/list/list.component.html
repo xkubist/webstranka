@@ -1,0 +1,50 @@
+<!--<div class="overlay h-100 d-flex justify-content-center align-items-center" *ngIf="loading">-->
+<!--  <div class="spinner-border" role="status">-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-10 col-md-offset-1">
+      <form [formGroup]="bottlesForm">
+        <table class="table table-hover">
+          <tbody>
+          <ng-container formArrayName="bottleFormArray">
+            <ng-container *ngFor="let amountForm of bottleFormArray.controls, let i = index">
+              <ng-container [formGroupName]="i">
+                <tr>
+                  <td class="col-sm-8 col-md-6">
+                    <div class="media">
+                      <a class="thumbnail pull-left" href="#"> <img class="media-object" [src]="bottles[i].imagePath"
+                                                                    style="width: 72px; height: 72px;"> </a>
+                      <div class="media-body">
+                        <h4>{{bottles[i].bottleName}}</h4>
+                      </div>
+                      <div class="media-body">
+                        <h5>{{bottles[i].description}}</h5>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="col-sm-1 col-md-1" style="text-align: center">
+                    <input type="number"
+                           class="form-control"
+                           id="amount"
+                           formControlName="amount">
+                  </td>
+                  <td class="col-sm-1 col-md-1 text-center"><strong>{{bottles[i].price}}Kč</strong></td>
+                  <td class="col-sm-1 col-md-1">
+                    <button type="button" class="btn btn-danger" (click)="addToCart(i)">
+                      <span class="glyphicon glyphicon-remove"></span> Add to cart
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+

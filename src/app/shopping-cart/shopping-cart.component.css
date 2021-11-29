@@ -1,0 +1,7 @@
+.container-fluid {
+  border: 1px solid black
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red
+}

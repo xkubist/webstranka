@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-sm-12">
+    <form [formGroup]="form">
+      <div class="form-check row">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input col-sm-10"
+            type="radio"
+            id="payByCard"
+            formControlName="payment"
+            value="card"
+            (blur)="onTouched()">
+        </div>
+        <label class="col-sm-10 form-check-label" for="payByCard">Platba kartou</label>
+      </div>
+
+      <div class="form-check row">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="payByTransaction"
+            formControlName="payment"
+            value="transaction"
+            (blur)="onTouched()">
+        </div>
+        <label class="col-sm-8 form-check-label" for="payByTransaction">Platba prevodem</label>
+      </div>
+
+      <div class="form-check row">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input col-sm-10"
+            type="radio"
+            id="payByCash"
+            formControlName="payment"
+            value="cash"
+            (blur)="onTouched()">
+        </div>
+        <label class="col-sm-8 form-check-label" for="payByCash">Platba hotove</label>
+      </div>
+    </form>
+  </div>
+</div>
+
