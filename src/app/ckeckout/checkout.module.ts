@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ShoppingCartComponent} from "./shopping-cart.component";
-import {ShoppingListComponent} from "./components/shopping-list/shopping-list.component";
+import {CheckoutComponent} from "./checkout.component";
 import {TotalComponent} from "./components/total/total.component";
 import {RouterModule} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -10,8 +9,7 @@ import {PaymentComponent} from "./components/payment/payment.component";
 
 @NgModule({
   declarations: [
-    ShoppingCartComponent,
-    ShoppingListComponent,
+    CheckoutComponent,
     TotalComponent,
     DeliveryComponent,
     PaymentComponent],
@@ -21,4 +19,4 @@ import {PaymentComponent} from "./components/payment/payment.component";
     ReactiveFormsModule
   ]
 })
-export class ShoppingCartModule { }
+export class CheckoutModule { }

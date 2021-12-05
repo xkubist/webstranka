@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -6,7 +6,6 @@ import {
   NG_VALUE_ACCESSOR,
   Validators
 } from "@angular/forms";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-delivery',
@@ -33,22 +32,22 @@ export class DeliveryComponent implements ControlValueAccessor, OnDestroy{
     })
   }
 
-  registerOnChange(onChange: any) {
+  registerOnChange(onChange: any): void {
     this.onChangeSub = this.form.valueChanges.subscribe(onChange);
     console.log(this.form.valueChanges.subscribe(onChange));
   }
 
-  writeValue(value: any) {
+  writeValue(value: any): void {
     if (value) {
       this.form.setValue(value);
     }
   }
 
-  registerOnTouched(onTouched: any) {
+  registerOnTouched(onTouched: any):void {
     this.onTouched = onTouched;
   }
 
-  setDisabledState(isDisabled: boolean) {
+  setDisabledState(isDisabled: boolean):void {
     if (isDisabled) {
       this.form.disable();
     }

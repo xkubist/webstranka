@@ -1,10 +1,12 @@
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {NgModule} from "@angular/core";
-import {ShoppingCartComponent} from "./shopping-cart/shopping-cart.component";
+import {CheckoutComponent} from "./ckeckout/checkout.component";
+import {ShoppingListComponent} from "./shopping-list/shopping-list.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'browse', pathMatch: 'full' },
-  {path: 'shopping-cart', component: ShoppingCartComponent}
+  {path: 'shopping-list', component: ShoppingListComponent},
+  {path: 'checkout', component: CheckoutComponent}
   // {path: 'browse',
   //   loadChildren:  () => import('./shop/shop-routing.module')
   //     .then(m => m.ShopRoutingModule)},

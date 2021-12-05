@@ -7,7 +7,7 @@ import {
   UrlTree
 } from "@angular/router";
 import {Observable} from "rxjs";
-import {ShoppingCartService} from "../../shopping-cart/shopping-cart.service";
+import {OrderService} from "../services/order.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +25,5 @@ export class PaymentAndDeliveryGuard implements CanActivate {
     console.log('true')
     return true;
   }
-  constructor(private router: Router, private scService: ShoppingCartService) { }
+  constructor(private router: Router, private scService: OrderService) { }
 }

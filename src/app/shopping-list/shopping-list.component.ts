@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {ShoppingCartService} from "../../shopping-cart.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CartItem} from "../../models/cart-item.model";
+import {CartItem} from "../ckeckout/models/cart-item.model";
+import {Router} from "@angular/router";
+import {ShoppingListService} from "./shopping-list.service";
 
 @Component({
   selector: 'app-my-shopping-list',
@@ -17,8 +18,9 @@ export class ShoppingListComponent {
   });
 
 
-  constructor(private shoppingCartService: ShoppingCartService,
-              private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private shoppingListService:ShoppingListService) {
   }
 
   get bottleFormArray() {
@@ -26,21 +28,19 @@ export class ShoppingListComponent {
   }
 
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit():Promise<void> {
     this.loading=true;
     try {
-      await this.shoppingCartService.loadShoppingCart();
-      this.shoppingCart = this.shoppingCartService.shoppingCart;
-      console.log(this.shoppingCart);
+      await this.shoppingListService.loadShoppingList();
+      this.shoppingCart = this.shoppingListService.shoppingCart;
       this.buildForm();
       this.total = this.getTotal();
       this.bottleFormArray.valueChanges.subscribe(
         (value: { amount: number }[]) => this.updateForm(value)
       );
-    } catch (e) {
+    }catch (e) {
       console.log(e);
-    }
-    finally {
+    }finally {
       this.loading=false;
     }
   }
@@ -74,12 +74,16 @@ export class ShoppingListComponent {
 
 
   private buildForm(): void {
-    Object.keys(this.shoppingCartService.shoppingCart).forEach((i) => {
+    Object.keys(this.shoppingCart).forEach((i) => {
       this.bottleFormArray.push(
         this.formBuilder.group({
           amount: [this.shoppingCart[+i].amount, Validators.required]
         })
       )
     })
+  }
+
+  toCheckout() {
+    this.router.navigate(["../checkout"]);
   }
 }

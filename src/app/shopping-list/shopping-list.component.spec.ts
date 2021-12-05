@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShoppingListComponent } from './shopping-list.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('ShoppingListComponent', () => {
   let component: ShoppingListComponent;
@@ -8,7 +9,8 @@ describe('ShoppingListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShoppingListComponent ]
+      declarations: [ ShoppingListComponent ],
+      imports: [ReactiveFormsModule]
     })
     .compileComponents();
   });

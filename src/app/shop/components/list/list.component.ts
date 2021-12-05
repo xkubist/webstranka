@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Bottle} from "../../../shared/models/bottle.model";
-import {ShoppingCartService} from "../../../shopping-cart/shopping-cart.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BottlesService} from "../../bottles.service";
-import {last} from "rxjs";
-import {ShoppingCartStorageService} from "../../../shopping-cart/shopping-cart-storage-service";
+import {ShoppingListService} from "../../../shopping-list/shopping-list.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-list',
@@ -18,13 +17,44 @@ export class ListComponent implements OnInit{
   bottlesForm: FormGroup = new FormGroup({
     bottleFormArray: this.formBuilder.array([])
   });
+  loading: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private bottleService: BottlesService,
-              private shoppingCartService: ShoppingCartService) {
+              private shoppingListService: ShoppingListService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
-  buildForm() {
+
+
+  get bottleFormArray() {
+    return this.bottlesForm.get('bottleFormArray') as FormArray;
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.loading = true;
+    try{
+      await this.bottleService.loadBottles();
+      await this.shoppingListService.loadShoppingList();
+      this.bottles=this.bottleService.bottles
+      this.buildForm();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading=false;
+    }
+  }
+
+  addToCart(index: number): void {
+    this.shoppingListService.storeItemToList(this.bottles[index], this.bottleFormArray.controls[index].get('amount')?.value);
+  }
+
+  editItem(index: number): void  {
+    this.router.navigate([index,'edit'], {relativeTo: this.route});
+  }
+
+  private buildForm(): void {
     Object.keys(this.bottles).forEach((i) => {
       this.bottleFormArray.push(
         this.formBuilder.group({
@@ -32,25 +62,5 @@ export class ListComponent implements OnInit{
         })
       )
     })
-  }
-
-  get bottleFormArray() {
-    return this.bottlesForm.get('bottleFormArray') as FormArray;
-  }
-
-  async ngOnInit(): Promise<void> {
-    try{
-      await this.shoppingCartService.loadShoppingCart();
-      await this.bottleService.loadBottles();
-      this.bottles=this.bottleService.bottles
-      console.log('bottles' + this.bottleService.bottles);
-      this.buildForm();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  addToCart(index: number) {
-    this.shoppingCartService.pushItemToCart(this.bottles[index], this.bottleFormArray.controls[index].get('amount')?.value);
   }
 }

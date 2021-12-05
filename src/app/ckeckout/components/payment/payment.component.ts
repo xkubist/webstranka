@@ -24,21 +24,21 @@ export class PaymentComponent implements ControlValueAccessor, OnDestroy{
     });
   }
 
-  registerOnTouched(onTouched: any) {
+  registerOnTouched(onTouched: any):void {
     this.onTouched = onTouched;
   }
 
-  registerOnChange(onChange: any) {
+  registerOnChange(onChange: any):void {
     this.onChangeSub = this.form.valueChanges.subscribe(onChange);
   }
 
-  writeValue(value: any) {
+  writeValue(value: any):void {
     if (value) {
       this.form.setValue(value);
     }
   }
 
-  setDisabledState(isDisabled: boolean) {
+  setDisabledState(isDisabled: boolean):void {
     if (isDisabled) {
       this.form.disable();
     } else {
