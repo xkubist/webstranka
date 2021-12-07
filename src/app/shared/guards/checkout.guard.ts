@@ -13,7 +13,6 @@ import {ShoppingListService} from "../../shopping-list/shopping-list.service";
   providedIn: 'root'
 })
 export class CheckoutGuard implements CanActivate {
-  private readonly EXPECTED_URL = '/shopping-list/payment-and-delivery';
 
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

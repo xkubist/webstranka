@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {OrderService} from "./order.service";
 import {ShoppingListService} from "../shopping-list/shopping-list.service";
 import {Subscription} from "rxjs";
-import {ShoppingItem} from "./models/cart-item.model";
+import {ShoppingItem} from "./models/shopping-item.model";
 
 @Component({
   selector: 'app-shopping-list',

@@ -2,7 +2,7 @@ import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {NgModule} from "@angular/core";
 import {CheckoutComponent} from "./ckeckout/checkout.component";
 import {ShoppingListComponent} from "./shopping-list/shopping-list.component";
-import {CheckoutGuard} from "./shared/guards/deliver-and-payment.guard";
+import {CheckoutGuard} from "./shared/guards/checkout.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: 'browse', pathMatch: 'full' },

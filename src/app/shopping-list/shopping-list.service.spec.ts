@@ -1,7 +1,7 @@
 import {inject, TestBed, waitForAsync} from "@angular/core/testing";
 import {ShoppingListStorageService} from "./shopping-list-storage-service";
 import {ShoppingListService} from "./shopping-list.service";
-import {ShoppingItem} from "../ckeckout/models/cart-item.model";
+import {ShoppingItem} from "../ckeckout/models/shopping-item.model";
 import {Bottle} from "../shared/models/bottle.model";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 

@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {lastValueFrom} from "rxjs";
-import {ShoppingItem} from "../ckeckout/models/cart-item.model";
+import {ShoppingItem} from "../ckeckout/models/shopping-item.model";
 
 @Injectable({
   providedIn: 'root'

@@ -43,7 +43,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy{
   removeBottle(index: number): void {
     this.shoppingListService.removeItemFromList(index);
     this.bottleFormArray.removeAt(index);
-    this.shoppingListService.shoppingList = this.shoppingListService.shoppingList;
   }
 
   private getTotal(): number {

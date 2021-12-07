@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Bottle} from "../shared/models/bottle.model";
 import {ShoppingListStorageService} from "./shopping-list-storage-service";
-import {ShoppingItem} from "../ckeckout/models/cart-item.model";
+import {ShoppingItem} from "../ckeckout/models/shopping-item.model";
 import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
