@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import {BottlesService} from "./shop/bottles.service";
+import {ShoppingListService} from "./shopping-list/shopping-list.service";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -7,6 +9,11 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers:[
+        {provide: BottlesService, useValue: jasmine.createSpy()},
+        {provide: ShoppingListService, useValue: jasmine.createSpy()}
+
+      ]
     }).compileComponents();
   });
 
@@ -20,12 +27,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('webstranka');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('webstranka app is running!');
   });
 });

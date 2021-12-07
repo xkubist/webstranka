@@ -7,17 +7,17 @@ import {
   UrlTree
 } from "@angular/router";
 import {Observable} from "rxjs";
-import {OrderService} from "../services/order.service";
+import {ShoppingListService} from "../../shopping-list/shopping-list.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentAndDeliveryGuard implements CanActivate {
+export class CheckoutGuard implements CanActivate {
   private readonly EXPECTED_URL = '/shopping-list/payment-and-delivery';
 
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.scService.getTotalSum() === 0) {
+    if (this.shoppingListService.getTotalSum() === 0) {
       console.log('false');
       this.router.navigate(['browse']);
       return false;
@@ -25,5 +25,5 @@ export class PaymentAndDeliveryGuard implements CanActivate {
     console.log('true')
     return true;
   }
-  constructor(private router: Router, private scService: OrderService) { }
+  constructor(private router: Router, private shoppingListService: ShoppingListService) { }
 }

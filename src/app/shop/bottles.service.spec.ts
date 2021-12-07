@@ -1,23 +1,23 @@
-import {TestBed} from "@angular/core/testing";
+import {inject, TestBed, waitForAsync} from "@angular/core/testing";
 import {BottlesService} from "./bottles.service";
 import {BottleStorageService} from "./bottle-storage.service";
 import {Bottle} from "../shared/models/bottle.model";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {HttpClientTestingModule,} from "@angular/common/http/testing";
 
 const SAMPLE_BOTTLES: Bottle[] = [{
   id: 1,
-    bottleName: 'Bottle Name',
+  bottleName: 'Bottle Name',
   description: 'Description',
   price: 100,
   imagePath: 'path.jpg',
 },
-{
-  id: 2,
+  {
+    id: 2,
     bottleName: 'Another Bottle Name',
-  description: 'Another Description',
-  price: 100,
-  imagePath: 'anotherPath.jpg',
-}]
+    description: 'Another Description',
+    price: 100,
+    imagePath: 'anotherPath.jpg',
+  }]
 
 const NEW_BOTTLES: Bottle[] = [{
   id: 1,
@@ -34,15 +34,17 @@ const NEW_BOTTLES: Bottle[] = [{
     imagePath: 'anotherPath.jpg',
   }]
 
-describe('BottleService', () =>{
+describe('BottleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         BottlesService,
         {
-          provide: BottleStorageService, useValue: jasmine.createSpyObj(
-          ['storeBottles','fetchBottles']
+          provide: BottleStorageService, useValue: jasmine.createSpyObj({
+              'fetchBottles': Promise.resolve(SAMPLE_BOTTLES),
+              'storeBottles': null,
+            }
           )
         },
       ]
@@ -55,41 +57,66 @@ describe('BottleService', () =>{
       .toBeTruthy();
   })
 
-  it('should call BottleStoreService storeBottles method with correct data', () => {
-    const service: BottlesService = TestBed.inject(BottlesService);
-    const storageService: BottleStorageService = TestBed.inject(BottleStorageService);
-
-    service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
-    service.storeBottles();
-
-    expect(storageService.storeBottles)
-      .toHaveBeenCalledOnceWith(SAMPLE_BOTTLES);
-  })
-
-  it('should update bottle with same id as given parameter to that parameter', () => {
-    const service: BottlesService = TestBed.inject(BottlesService);
-
-    service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
-    service.updateBottle(NEW_BOTTLES[0]);
-    console.log(NEW_BOTTLES[0]);
-
-    expect(service.bottles)
-      .toEqual(NEW_BOTTLES);
-  })
-
-  it('should create bottle with correct id',() => {
-    const service: BottlesService = TestBed.inject(BottlesService);
-    service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
-    let newBottlesCopy: Bottle[] = JSON.parse(JSON.stringify(NEW_BOTTLES))
-
-    let bottle: Bottle = newBottlesCopy[0];
-    bottle.id = 3;
-    let bottles:Bottle[] = [...service.bottles,bottle];
+  it('should fetch bottles', waitForAsync(
+    inject([BottleStorageService, BottlesService],
+      (storage: BottleStorageService, service: BottlesService) => {
+        service.loadBottles().then(() =>
+          expect(service.bottles).toEqual(SAMPLE_BOTTLES)
+        );
+      })
+  ))
 
 
-    service.pushBottle(newBottlesCopy[0]);
+  it('should call BottleStoreService storeBottles method with correct data', inject([BottleStorageService, BottlesService],
+    (storage: BottleStorageService, service: BottlesService) => {
 
-    expect(service.bottles)
-      .toEqual(bottles);
-  })
+      service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
+      service.saveBottles();
+
+      expect(storage.storeBottles)
+        .toHaveBeenCalledOnceWith(SAMPLE_BOTTLES);
+    })
+  )
+
+  it('should update bottle with same id', inject([BottlesService],
+    (service: BottlesService) => {
+
+      service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
+      service.updateBottle(NEW_BOTTLES[0]);
+
+      expect(service.bottles)
+        .toEqual(NEW_BOTTLES);
+    })
+  )
+
+  it('should create new bottle with correct id', inject([BottlesService],
+    (service: BottlesService) => {
+      service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
+      let newBottlesCopy: Bottle[] = JSON.parse(JSON.stringify(NEW_BOTTLES))
+
+      let bottle: Bottle = newBottlesCopy[0];
+      bottle.id = 3;
+      let bottles: Bottle[] = [...service.bottles, bottle];
+
+
+      service.pushBottle(newBottlesCopy[0]);
+
+      expect(service.bottles)
+        .toEqual(bottles);
+    })
+  )
+
+  it('should remove bottle', inject([BottleStorageService, BottlesService],
+    (storage: BottleStorageService, service: BottlesService) => {
+      let bottles: Bottle[] = service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
+      let index = 1;
+      service.bottles = JSON.parse(JSON.stringify(bottles));
+
+      service.removeBottle(index);
+      bottles.splice(index, 1);
+
+      expect(storage.storeBottles).toHaveBeenCalledWith(bottles);
+      expect(service.bottles).toEqual(bottles);
+    })
+  )
 })

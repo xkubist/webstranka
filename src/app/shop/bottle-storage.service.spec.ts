@@ -2,7 +2,6 @@ import {inject, TestBed} from "@angular/core/testing";
 import {BottleStorageService} from "./bottle-storage.service";
 import {Bottle} from "../shared/models/bottle.model";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {ShoppingListStorageService} from "../shopping-list/shopping-list-storage-service";
 
 const SAMPLE_BOTTLES: Bottle[] = [
   {
@@ -23,7 +22,7 @@ const SAMPLE_BOTTLES: Bottle[] = [
 
 const BOTTLES_WEB_ADDRESS: string = 'https://webstranka-45787-default-rtdb.europe-west1.firebasedatabase.app/bottles.json'
 
-describe('bottle service storage tests', () => {
+describe('BottleStorageService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -41,7 +40,7 @@ describe('bottle service storage tests', () => {
     })
   )
 
-  it('should call HttpClient put method with BOTTLE_WEB_ADDRESS AND SAMPLE_BOTTLES as parameters', inject([HttpTestingController, BottleStorageService],
+  it('should call HttpClient put method with BOTTLE_WEB_ADDRESS and SAMPLE_BOTTLES as parameters', inject([HttpTestingController, BottleStorageService],
     (httpTestingController: HttpTestingController, service: BottleStorageService) => {
 
       service.storeBottles(SAMPLE_BOTTLES);
@@ -52,13 +51,15 @@ describe('bottle service storage tests', () => {
     })
   )
 
-  // it('should call HttpClient get method with BOTTLES_WEB_ADDRESS parameter', () => {
-  //   const service: BottleStorageService = TestBed.inject(BottleStorageService);
-  //   const client: HttpClient = TestBed.inject(HttpClient);
-  //
-  //   service.fetchBottles();
-  //
-  //   expect(client.get)
-  //     .toHaveBeenCalledOnceWith(BOTTLES_WEB_ADDRESS);
-  // })
+  it('should call HttpClient get method with BOTTLES_WEB_ADDRESS parameter and get correct data', inject([HttpTestingController, BottleStorageService],
+    (httpTestingController: HttpTestingController, service: BottleStorageService) => {
+      service.fetchBottles().then((bottles) => {
+        expect(bottles).toEqual(SAMPLE_BOTTLES);
+      })
+
+      const req = httpTestingController.expectOne(BOTTLES_WEB_ADDRESS);
+      expect(req.request.method).toEqual("GET");
+      req.flush(SAMPLE_BOTTLES);
+    })
+  )
 })

@@ -1,12 +1,11 @@
 import {inject, TestBed} from "@angular/core/testing";
-import {HttpClient} from "@angular/common/http";
 import {ShoppingListStorageService} from "./shopping-list-storage-service";
-import {CartItem} from "../ckeckout/models/cart-item.model";
+import {ShoppingItem} from "../ckeckout/models/cart-item.model";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 const SHOPPING_LIST_WEB_ADDRESS = 'https://webstranka-45787-default-rtdb.europe-west1.firebasedatabase.app/shoppingList.json';
 
-const SHOPPING_LIST: CartItem[] = [
+const SAMPLE_SHOPPING_LIST: ShoppingItem[] = [
   {
     bottle: {
       id: 1,
@@ -29,7 +28,7 @@ const SHOPPING_LIST: CartItem[] = [
   }
 ]
 
-describe('shopping list service storage tests', () => {
+describe('ShoppingListStorageService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -39,32 +38,33 @@ describe('shopping list service storage tests', () => {
     })
   })
 
-  it('should be created', inject([HttpTestingController, ShoppingListStorageService],
-    (httpMock: HttpTestingController, service: ShoppingListStorageService) => {
+  it('should be created', inject([ShoppingListStorageService],
+    (service: ShoppingListStorageService) => {
       expect(service)
         .toBeTruthy();
     })
   )
 
-  it('should call put method with SHOPPING_LIST_WEB_ADDRESS AND SHOPPING_LIST', inject([HttpTestingController, ShoppingListStorageService],
+  it('should call put method with SHOPPING_LIST_WEB_ADDRESS and SAMPLE_SHOPPING_LIST', inject([HttpTestingController, ShoppingListStorageService],
     (httpTestingController: HttpTestingController, service: ShoppingListStorageService) => {
 
-        service.storeShoppingList(SHOPPING_LIST);
+      service.storeShoppingList(SAMPLE_SHOPPING_LIST);
 
-        const req = httpTestingController.expectOne(SHOPPING_LIST_WEB_ADDRESS);
-        expect(req.request.method).toEqual("PUT");
-        expect(req.request.body).toEqual(SHOPPING_LIST);
-      })
-    )
-
-
-      // it('should call HttpClient get method with BOTTLES_WEB_ADDRESS parameter', () => {
-      //   const service: ShoppingListStorageService = TestBed.inject(ShoppingListStorageService);
-      //   const client: HttpClient = TestBed.inject(HttpClient);
-      //
-      //   service.fetchShoppingList();
-      //
-      //   expect(client.get)
-      //     .toHaveBeenCalledOnceWith(SHOPPING_LIST_WEB_ADDRESS);
-      // })
+      const req = httpTestingController.expectOne(SHOPPING_LIST_WEB_ADDRESS);
+      expect(req.request.method).toEqual("PUT");
+      expect(req.request.body).toEqual(SAMPLE_SHOPPING_LIST);
     })
+  )
+
+  it('should call HttpClient get method with SHOPPING_LIST_WEB_ADDRESS parameter and get correct data', inject([HttpTestingController, ShoppingListStorageService],
+    (httpTestingController: HttpTestingController, service: ShoppingListStorageService) => {
+      service.fetchShoppingList().then((shoppingList) => {
+        expect(shoppingList).toEqual(SAMPLE_SHOPPING_LIST);
+      })
+
+      const req = httpTestingController.expectOne(SHOPPING_LIST_WEB_ADDRESS);
+      expect(req.request.method).toEqual("GET");
+      req.flush(SAMPLE_SHOPPING_LIST);
+    })
+  )
+})

@@ -15,7 +15,6 @@ import {ShoppingListModule} from "./shopping-list/shopping-list.module";
   ],
   imports: [
     BrowserModule,
-    // AppRoutingModule, //not needed because we are importing it lazy waz using routing
     ShopModule,
     CheckoutModule,
     ShoppingListModule,

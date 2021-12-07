@@ -1,4 +1,4 @@
-import {CartItem} from "./cart-item.model";
+import {ShoppingItem} from "./cart-item.model";
 
 export class Order{
   name: string;
@@ -6,12 +6,11 @@ export class Order{
   number: string;
   payment: Payment;
   delivery: Delivery;
-  shoppingCart: CartItem[]
+  shoppingCart: ShoppingItem[]
 }
 
 export enum Payment {
   CASH = 'cash',
-  TRANSACTION = 'transaction',
   CARD = 'card'
 }
 

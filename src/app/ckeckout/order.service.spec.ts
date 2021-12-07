@@ -1,10 +1,10 @@
-import {TestBed} from "@angular/core/testing";
+import {inject, TestBed} from "@angular/core/testing";
 import {OrderStorageService} from "./order.storage.service";
 import {OrderService} from "./order.service";
 import {Delivery, Order, Payment} from "./models/order.model";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 
-describe('order service tests', () =>{
+describe('OrderService', () => {
   const MOCKED_ORDER: Order = {
     name: 'Alojz',
     email: 'Novak',
@@ -13,18 +13,18 @@ describe('order service tests', () =>{
     delivery: Delivery.PPL,
     shoppingCart: []
   }
-  beforeEach(() =>{
-   TestBed.configureTestingModule({
-     imports: [HttpClientTestingModule],
-     providers: [
-       OrderService,
-       {
-         provide: OrderStorageService, useValue: jasmine.createSpyObj(
-           ['storeOrder']
-         )
-       }
-     ]
-   })
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        OrderService,
+        {
+          provide: OrderStorageService, useValue: jasmine.createSpyObj(
+            ['storeOrder']
+          )
+        }
+      ]
+    })
   })
 
   it('should be created', () => {
@@ -33,12 +33,13 @@ describe('order service tests', () =>{
       .toBeTruthy();
   })
 
-  it('should call storeOrder method with MOCKED_ORDER as a param',() => {
-    const service: OrderService = TestBed.inject(OrderService);
-    const storeService: OrderStorageService = TestBed.inject(OrderStorageService);
-    service.order = JSON.parse(JSON.stringify(MOCKED_ORDER));
-    service.storeOrder();
-    expect(storeService.storeOrder)
-      .toHaveBeenCalledOnceWith(MOCKED_ORDER);
-  })
+  it('should call storeOrder method with MOCKED_ORDER as a parameter', inject([OrderStorageService, OrderService],
+    (storeService: OrderStorageService, service: OrderService) => {
+
+      service.order = JSON.parse(JSON.stringify(MOCKED_ORDER));
+      service.storeOrder();
+      expect(storeService.storeOrder)
+        .toHaveBeenCalledOnceWith(MOCKED_ORDER);
+    })
+  )
 })

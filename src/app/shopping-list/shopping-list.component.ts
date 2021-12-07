@@ -1,18 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CartItem} from "../ckeckout/models/cart-item.model";
 import {Router} from "@angular/router";
 import {ShoppingListService} from "./shopping-list.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-my-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css']
 })
-export class ShoppingListComponent {
+export class ShoppingListComponent implements OnInit, OnDestroy{
   total: number = 0;
   loading: boolean = false;
-  shoppingCart: CartItem[];
+  unsub: Subject<void> = new Subject<void>();
   bottlesForm: FormGroup = new FormGroup({
     bottleFormArray: this.formBuilder.array([])
   });
@@ -20,7 +20,7 @@ export class ShoppingListComponent {
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private shoppingListService:ShoppingListService) {
+              public shoppingListService: ShoppingListService) {
   }
 
   get bottleFormArray() {
@@ -28,62 +28,55 @@ export class ShoppingListComponent {
   }
 
 
-  async ngOnInit():Promise<void> {
-    this.loading=true;
-    try {
-      await this.shoppingListService.loadShoppingList();
-      this.shoppingCart = this.shoppingListService.shoppingCart;
-      this.buildForm();
+  ngOnInit(): void {
+    this.shoppingListService.shoppingListReady$.pipe(takeUntil(this.unsub)).subscribe(() => {
+      this.loading = true;
+      this.loadForm();
       this.total = this.getTotal();
-      this.bottleFormArray.valueChanges.subscribe(
-        (value: { amount: number }[]) => this.updateForm(value)
-      );
-    }catch (e) {
-      console.log(e);
-    }finally {
-      this.loading=false;
-    }
+      this.loading = false;
+    })
+    this.bottleFormArray.valueChanges.pipe(takeUntil(this.unsub)).subscribe(
+      (value: { amount: number }[]) => this.updateForm(value)
+    );
   }
 
   removeBottle(index: number): void {
-    this.shoppingCart.splice(index, 1);
+    this.shoppingListService.removeItemFromList(index);
     this.bottleFormArray.removeAt(index);
+    this.shoppingListService.shoppingList = this.shoppingListService.shoppingList;
   }
 
   private getTotal(): number {
-    if (!this.shoppingCart) {
-      return 0;
-    }
-    let total: number = 0;
-    for (let i = 0; i < this.shoppingCart.length; i++) {
-      total += this.shoppingCart[i].bottle.price * this.shoppingCart[i].amount;
-    }
-    return total;
+    return this.shoppingListService.getTotalSum();
   }
 
   private updateForm(amounts: { amount: number }[]): void {
     for (let index = 0; index < amounts.length; index++) {
-      if (amounts[index].amount === 0 || !amounts[index].amount) {
+      if (amounts[index].amount === 0) {
         this.removeBottle(index)
       } else {
-        this.shoppingCart[index].amount = amounts[index].amount;
+        this.shoppingListService.updateAmount(index, amounts[index].amount);
       }
     }
     this.total = this.getTotal();
   }
 
 
-  private buildForm(): void {
-    Object.keys(this.shoppingCart).forEach((i) => {
+  private loadForm(): void {
+    Object.keys(this.shoppingListService.shoppingList).forEach((i) => {
       this.bottleFormArray.push(
         this.formBuilder.group({
-          amount: [this.shoppingCart[+i].amount, Validators.required]
+          amount: [this.shoppingListService.shoppingList[+i].amount, Validators.required]
         })
       )
     })
   }
 
-  toCheckout() {
+  toCheckout(): void {
     this.router.navigate(["../checkout"]);
+  }
+
+  ngOnDestroy(): void {
+    this.unsub.next();
   }
 }

@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Bottle} from "../shared/models/bottle.model";
 import {lastValueFrom} from "rxjs";
@@ -8,13 +8,10 @@ import {lastValueFrom} from "rxjs";
   providedIn: 'root'
 })
 
-export class BottleStorageService implements OnInit{
+export class BottleStorageService{
 
   private readonly BOTTLES_WEB_ADDRESS: string = 'https://webstranka-45787-default-rtdb.europe-west1.firebasedatabase.app/bottles.json'
   constructor(private http:HttpClient) {}
-
-  ngOnInit() {
-  }
 
   storeBottles(bottles: Bottle[]): void {
     this.http.put(this.BOTTLES_WEB_ADDRESS, bottles).subscribe(

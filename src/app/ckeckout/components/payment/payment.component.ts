@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 
 @Component({
@@ -11,7 +11,7 @@ import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validat
     useExisting: PaymentComponent
   }]
 })
-export class PaymentComponent implements ControlValueAccessor, OnDestroy{
+export class PaymentComponent implements ControlValueAccessor{
   form: FormGroup;
 
   onTouched = () => {};
@@ -44,9 +44,5 @@ export class PaymentComponent implements ControlValueAccessor, OnDestroy{
     } else {
       this.form.enable();
     }
-  }
-
-  ngOnDestroy(): void{
-    // this.onChangeSub.unsubscrbe();
   }
 }

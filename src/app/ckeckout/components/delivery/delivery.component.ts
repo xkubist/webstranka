@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -19,7 +19,7 @@ import {
     }
     ]
 })
-export class DeliveryComponent implements ControlValueAccessor, OnDestroy{
+export class DeliveryComponent implements ControlValueAccessor{
   form: FormGroup;
 
   onTouched = () => {};
@@ -54,13 +54,5 @@ export class DeliveryComponent implements ControlValueAccessor, OnDestroy{
     else {
       this.form.enable();
     }
-  }
-
-  ngOnDestroy() {
-    // this.onChangeSub.unsubscribe();
-  }
-
-  ngOnInit(): void {
-
   }
 }

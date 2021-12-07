@@ -11,7 +11,7 @@ export class OrderService {
   }
   private _order: Order
   get order(): Order {
-    return this._order;
+    return JSON.parse(JSON.stringify(this._order)) as Order;
   }
 
   set order(order: Order) {

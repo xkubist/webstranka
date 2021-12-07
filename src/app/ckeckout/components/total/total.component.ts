@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ShoppingListService} from "../../../shopping-list/shopping-list.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -7,19 +8,21 @@ import {ShoppingListService} from "../../../shopping-list/shopping-list.service"
   templateUrl: './total.component.html',
   styleUrls: ['./total.component.css']
 })
-export class TotalComponent {
+export class TotalComponent implements OnInit, OnDestroy {
   total: number;
+  subscription: Subscription;
 
   constructor(private shoppingListService: ShoppingListService) {
   }
 
-  async ngOnInit(): Promise<void> {
-    try{
-      await this.shoppingListService.loadShoppingList();
-      this.total= this.shoppingListService.getTotalSum();
-    }catch (e) {
-      console.log(e);
-    }
+  ngOnInit(): void {
+    this.subscription = this.shoppingListService.shoppingListReady$.subscribe(() =>
+      this.total = this.shoppingListService.getTotalSum()
+    )
+  }
+
+  ngOnDestroy():void {
+    this.subscription.unsubscribe();
   }
 
 }

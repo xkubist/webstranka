@@ -19,16 +19,16 @@
             </thead>
             <tbody>
             <ng-container formArrayName="bottleFormArray">
-              <ng-container *ngFor="let amountForm of bottleFormArray.controls, let i = index">
+              <ng-container *ngFor="let shoppingItem of shoppingListService.shoppingList, let i = index">
                 <ng-container [formGroupName]="i">
                   <tr>
                     <td class="col-sm-8 col-md-6">
                       <div class="media">
                         <a class="thumbnail pull-left" href="#"> <img class="media-object"
-                                                                      [src]="shoppingCart[i].bottle.imagePath"
+                                                                      [src]="shoppingItem.bottle.imagePath"
                                                                       style="width: 72px; height: 72px;"> </a>
                         <div class="media-body">
-                          <h4>{{shoppingCart[i].bottle.bottleName}}</h4>
+                          <h4>{{shoppingItem.bottle.bottleName}}</h4>
                         </div>
                       </div>
                     </td>
@@ -38,9 +38,9 @@
                              id="amount"
                              formControlName="amount">
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{shoppingCart[i].bottle.price}}Kč</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>{{shoppingItem.bottle.price}}Kč</strong></td>
                     <td class="col-sm-1 col-md-1 text-center">
-                      <strong>{{shoppingCart[i].bottle.price * shoppingCart[i].amount}}Kč</strong></td>
+                      <strong>{{shoppingItem.bottle.price * shoppingItem.amount}}Kč</strong></td>
                     <td class="col-sm-1 col-md-1">
                       <button type="button" class="btn btn-danger" (click)="removeBottle(i)">
                         <span class="glyphicon glyphicon-remove"></span> Remove

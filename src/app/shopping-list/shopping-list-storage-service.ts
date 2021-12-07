@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {lastValueFrom} from "rxjs";
-import {CartItem} from "../ckeckout/models/cart-item.model";
+import {ShoppingItem} from "../ckeckout/models/cart-item.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class ShoppingListStorageService {
   constructor(private http: HttpClient) {
   }
 
-  storeShoppingList(cart: CartItem[]) {
+  storeShoppingList(cart: ShoppingItem[]) {
     this.http.put(this.SHOPPING_LIST_WEB_ADDRESS, cart).subscribe();
   }
 
-  fetchShoppingList(): Promise<CartItem[]> {
-    return lastValueFrom(this.http.get<CartItem[]>(this.SHOPPING_LIST_WEB_ADDRESS));
+  fetchShoppingList(): Promise<ShoppingItem[]> {
+    return lastValueFrom(this.http.get<ShoppingItem[]>(this.SHOPPING_LIST_WEB_ADDRESS));
   }
 }
