@@ -1,11 +1,11 @@
 import {inject, TestBed, waitForAsync} from "@angular/core/testing";
 import {ShoppingListStorageService} from "./shopping-list-storage-service";
 import {ShoppingListService} from "./shopping-list.service";
-import {ShoppingItem} from "../ckeckout/models/shopping-item.model";
-import {Bottle} from "../shared/models/bottle.model";
+import {ShoppingItemModel} from "../../checkout/models/shopping-item.model";
+import {Bottle} from "../../shared/models/bottle.model";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 
-const SAMPLE_SHOPPING_LIST: ShoppingItem[] = [
+const SAMPLE_SHOPPING_LIST: ShoppingItemModel[] = [
   {
     bottle: {
       id: 1,
@@ -82,8 +82,10 @@ describe('ShoppingListService', () => {
   it('should add 5 of existing bottles to shopping list', inject([ShoppingListService],
     (service: ShoppingListService) => {
       service.shoppingList = JSON.parse(JSON.stringify(SAMPLE_SHOPPING_LIST));
-
-      service.storeItemToList(FIRST_BOTTLE_FROM_SHOPPING_LIST, 5);
+      let shoppingItem: ShoppingItemModel = new ShoppingItemModel();
+      shoppingItem.amount=5;
+      shoppingItem.bottle=FIRST_BOTTLE_FROM_SHOPPING_LIST;
+      service.storeItemToList(shoppingItem);
 
       expect(service.shoppingList.length).toEqual(2);
       expect(service.shoppingList[0].bottle).toEqual(FIRST_BOTTLE_FROM_SHOPPING_LIST);
@@ -95,8 +97,10 @@ describe('ShoppingListService', () => {
   it('should add 5 of new bottle to shopping list', inject([ShoppingListService],
     (service: ShoppingListService) => {
       service.shoppingList = JSON.parse(JSON.stringify(SAMPLE_SHOPPING_LIST));
-
-      service.storeItemToList(NEW_BOTTLE, 5);
+      let shoppingItem: ShoppingItemModel = new ShoppingItemModel();
+      shoppingItem.amount=5;
+      shoppingItem.bottle=NEW_BOTTLE;
+      service.storeItemToList(shoppingItem);
 
       expect(service.shoppingList.length).toEqual(3);
       expect(service.shoppingList[2].bottle).toEqual(NEW_BOTTLE);
@@ -115,7 +119,7 @@ describe('ShoppingListService', () => {
 
   it('should remove shopping item from list', inject([ShoppingListStorageService, ShoppingListService],
     (storage: ShoppingListStorageService, service: ShoppingListService) => {
-      let shoppingList: ShoppingItem[] = JSON.parse(JSON.stringify(SAMPLE_SHOPPING_LIST));
+      let shoppingList: ShoppingItemModel[] = JSON.parse(JSON.stringify(SAMPLE_SHOPPING_LIST));
       let index: number = 0
       service.shoppingList = shoppingList.slice();
 
@@ -135,7 +139,25 @@ describe('ShoppingListService', () => {
 
         service.updateAmount(index,amount);
 
-        expect(service.shoppingList[index].amount).toEqual(amount)
+        expect(service.shoppingList[index].amount).toEqual(amount);
       })
+  )
+
+  it('should update bottle in shoppingListItem', inject([ShoppingListService],
+    (service: ShoppingListService) => {
+      let index: number = 1;
+      let bottle: Bottle =  {
+        id: 2,
+        bottleName: 'New Bottle Name',
+        description: 'New Description',
+        price: 100,
+        imagePath: 'New path.jpg',
+      };
+      service.shoppingList = JSON.parse(JSON.stringify(SAMPLE_SHOPPING_LIST));
+
+      service.updateBottle(bottle);
+
+      expect(service.shoppingList[index].bottle).toEqual(bottle);
+    })
   )
 })

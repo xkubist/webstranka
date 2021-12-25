@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {ShoppingListService} from "./shopping-list.service";
+import {ShoppingListService} from "../services/shopping-list/shopping-list.service";
 import {Subject, takeUntil} from "rxjs";
 
 @Component({
@@ -10,17 +10,20 @@ import {Subject, takeUntil} from "rxjs";
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy{
-  total: number = 0;
-  loading: boolean = false;
-  unsub: Subject<void> = new Subject<void>();
-  bottlesForm: FormGroup = new FormGroup({
-    bottleFormArray: this.formBuilder.array([])
-  });
-
+  total: number;
+  loading: boolean;
+  unsub: Subject<void>;
+  bottlesForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               public shoppingListService: ShoppingListService) {
+    this.total = 0;
+    this.loading = false;
+    this.unsub = new Subject();
+    this.bottlesForm = new FormGroup({
+      bottleFormArray: this.formBuilder.array([])
+    });
   }
 
   get bottleFormArray() {
@@ -29,7 +32,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy{
 
 
   ngOnInit(): void {
-    this.shoppingListService.shoppingListReady$.pipe(takeUntil(this.unsub)).subscribe(() => {
+    this.shoppingListService.shoppingListReady.pipe(takeUntil(this.unsub)).subscribe(() => {
       this.loading = true;
       this.loadForm();
       this.total = this.getTotal();
@@ -40,7 +43,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy{
     );
   }
 
-  removeBottle(index: number): void {
+  removeShoppingItem(index: number): void {
     this.shoppingListService.removeItemFromList(index);
     this.bottleFormArray.removeAt(index);
   }
@@ -52,7 +55,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy{
   private updateForm(amounts: { amount: number }[]): void {
     for (let index = 0; index < amounts.length; index++) {
       if (amounts[index].amount === 0) {
-        this.removeBottle(index)
+        this.removeShoppingItem(index)
       } else {
         this.shoppingListService.updateAmount(index, amounts[index].amount);
       }

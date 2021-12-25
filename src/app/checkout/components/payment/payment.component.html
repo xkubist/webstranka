@@ -9,7 +9,7 @@
             id="payByCard"
             formControlName="payment"
             value="card"
-            (blur)="onTouched()">
+            (click)="select('card')">
         </div>
         <label class="col-sm-10 form-check-label" for="payByCard">Platba kartou</label>
       </div>
@@ -22,7 +22,7 @@
             id="payByTransaction"
             formControlName="payment"
             value="transaction"
-            (blur)="onTouched()">
+            (click)="select('transaction')">
         </div>
         <label class="col-sm-8 form-check-label" for="payByTransaction">Platba prevodem</label>
       </div>
@@ -35,7 +35,7 @@
             id="payByCash"
             formControlName="payment"
             value="cash"
-            (blur)="onTouched()">
+            (click)="select('cash')">
         </div>
         <label class="col-sm-8 form-check-label" for="payByCash">Platba hotove</label>
       </div>

@@ -23,8 +23,7 @@ export class DeliveryComponent implements ControlValueAccessor{
   form: FormGroup;
 
   onTouched = () => {};
-  // @ts-ignore
-  onChangeSub: Disposable;
+  onChange = (value: any) => {};
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -33,14 +32,11 @@ export class DeliveryComponent implements ControlValueAccessor{
   }
 
   registerOnChange(onChange: any): void {
-    this.onChangeSub = this.form.valueChanges.subscribe(onChange);
-    console.log(this.form.valueChanges.subscribe(onChange));
+    this.onChange = onChange;
   }
 
   writeValue(value: any): void {
-    if (value) {
-      this.form.setValue(value);
-    }
+    this.form.controls['delivery'].setValue(value);
   }
 
   registerOnTouched(onTouched: any):void {
@@ -54,5 +50,10 @@ export class DeliveryComponent implements ControlValueAccessor{
     else {
       this.form.enable();
     }
+  }
+
+  select(value: any) {
+    this.form.controls['delivery'].setValue(value);
+    this.onChange(value);
   }
 }

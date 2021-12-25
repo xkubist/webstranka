@@ -1,6 +1,6 @@
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {NgModule} from "@angular/core";
-import {CheckoutComponent} from "./ckeckout/checkout.component";
+import {CheckoutComponent} from "./checkout/checkout.component";
 import {ShoppingListComponent} from "./shopping-list/shopping-list.component";
 import {CheckoutGuard} from "./shared/guards/checkout.guard";
 

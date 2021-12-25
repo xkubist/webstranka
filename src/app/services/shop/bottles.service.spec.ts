@@ -1,7 +1,7 @@
 import {inject, TestBed, waitForAsync} from "@angular/core/testing";
 import {BottlesService} from "./bottles.service";
 import {BottleStorageService} from "./bottle-storage.service";
-import {Bottle} from "../shared/models/bottle.model";
+import {Bottle} from "../../shared/models/bottle.model";
 import {HttpClientTestingModule,} from "@angular/common/http/testing";
 
 const SAMPLE_BOTTLES: Bottle[] = [{
@@ -110,9 +110,10 @@ describe('BottleService', () => {
     (storage: BottleStorageService, service: BottlesService) => {
       let bottles: Bottle[] = service.bottles = JSON.parse(JSON.stringify(SAMPLE_BOTTLES));
       let index = 1;
+      let bottle = bottles[1]
       service.bottles = JSON.parse(JSON.stringify(bottles));
 
-      service.removeBottle(index);
+      service.removeBottle(bottle);
       bottles.splice(index, 1);
 
       expect(storage.storeBottles).toHaveBeenCalledWith(bottles);

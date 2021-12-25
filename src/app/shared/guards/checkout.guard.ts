@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -6,23 +6,33 @@ import {
   RouterStateSnapshot,
   UrlTree
 } from "@angular/router";
-import {Observable} from "rxjs";
-import {ShoppingListService} from "../../shopping-list/shopping-list.service";
+import {first, map, Observable, Subject} from "rxjs";
+import {ShoppingListService} from "../../services/shopping-list/shopping-list.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CheckoutGuard implements CanActivate {
+export class CheckoutGuard implements CanActivate, OnDestroy {
+  unsub: Subject<void>;
+
+  constructor(private router: Router, private shoppingListService: ShoppingListService) {
+    this.unsub = new Subject();
+  }
 
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.shoppingListService.getTotalSum() === 0) {
-      console.log('false');
-      this.router.navigate(['browse']);
-      return false;
-    }
-    console.log('true')
-    return true;
+    return this.shoppingListService.shoppingListReady.asObservable().pipe(map(() => {
+      if (this.shoppingListService.getTotalSum() === 0) {
+        alert('Cannot open checkout page for empty shopping-cart');
+        this.router.navigate(['shopping-list']);
+        return false;
+      }
+      return true;
+    })
+    )
   }
-  constructor(private router: Router, private shoppingListService: ShoppingListService) { }
+
+  ngOnDestroy() {
+    this.unsub.next()
+  }
 }

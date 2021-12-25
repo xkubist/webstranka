@@ -1,6 +1,6 @@
 import {inject, TestBed} from "@angular/core/testing";
 import {BottleStorageService} from "./bottle-storage.service";
-import {Bottle} from "../shared/models/bottle.model";
+import {Bottle} from "../../shared/models/bottle.model";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 const SAMPLE_BOTTLES: Bottle[] = [

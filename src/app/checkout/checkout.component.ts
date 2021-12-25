@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {OrderService} from "./order.service";
-import {ShoppingListService} from "../shopping-list/shopping-list.service";
-import {Subscription} from "rxjs";
-import {ShoppingItem} from "./models/shopping-item.model";
+import {OrderService} from "../services/checkout/order.service";
+import {ShoppingListService} from "../services/shopping-list/shopping-list.service";
+import {Subject, takeUntil} from "rxjs";
+import {ShoppingItemModel} from "./models/shopping-item.model";
 
 @Component({
   selector: 'app-shopping-list',
@@ -12,8 +12,9 @@ import {ShoppingItem} from "./models/shopping-item.model";
 })
 export class CheckoutComponent implements OnInit {
   form: FormGroup;
-  subscription: Subscription;
-  shoppingList: ShoppingItem[];
+  shoppingList: ShoppingItemModel[];
+  total: number;
+  private unsub: Subject<void>;
 
   constructor(private fb: FormBuilder, private orderService: OrderService, private shoppingListService: ShoppingListService) {
     this.form = this.fb.group({
@@ -23,21 +24,24 @@ export class CheckoutComponent implements OnInit {
       delivery: ['', Validators.required],
       payment: ['',Validators.required]
     })
+    this.unsub = new Subject();
   }
 
   ngOnInit(): void {
-    this.subscription = this.shoppingListService.shoppingListReady$.subscribe(() =>
+    this.shoppingListService.shoppingListReady.pipe(takeUntil(this.unsub)).subscribe(() =>
       this.shoppingList = this.shoppingListService.shoppingList
     )
+    this.total = this.shoppingListService.getTotalSum()
   }
 
   onSubmit(): void {
+    console.log(this.form);
     this.orderService.order=this.form.value
     this.orderService.order.shoppingCart=this.shoppingList;
     this.orderService.storeOrder();
   }
 
   onNgDestroy(): void{
-    this.subscription.unsubscribe();
+    this.unsub.next();
   }
 }

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-payment',
@@ -15,8 +16,7 @@ export class PaymentComponent implements ControlValueAccessor{
   form: FormGroup;
 
   onTouched = () => {};
-  // @ts-ignore
-  onChangeSub: Subscription;
+  onChange = (value: any) => {};
 
   constructor(private fb: FormBuilder){
     this.form = this.fb.group({
@@ -29,13 +29,11 @@ export class PaymentComponent implements ControlValueAccessor{
   }
 
   registerOnChange(onChange: any):void {
-    this.onChangeSub = this.form.valueChanges.subscribe(onChange);
+    this.onChange = onChange;
   }
 
   writeValue(value: any):void {
-    if (value) {
-      this.form.setValue(value);
-    }
+    this.form.controls['payment'].setValue(value);
   }
 
   setDisabledState(isDisabled: boolean):void {
@@ -44,5 +42,10 @@ export class PaymentComponent implements ControlValueAccessor{
     } else {
       this.form.enable();
     }
+  }
+
+  select(value: any) {
+    this.form.controls['payment'].setValue(value);
+    this.onChange(value);
   }
 }

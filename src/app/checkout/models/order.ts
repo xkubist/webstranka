@@ -1,12 +1,12 @@
-import {ShoppingItem} from "./shopping-item.model";
+import {ShoppingItemModel} from "./shopping-item.model";
 
-export class Order{
+export interface Order {
   name: string;
   email: string;
   number: string;
   payment: Payment;
   delivery: Delivery;
-  shoppingCart: ShoppingItem[]
+  shoppingCart: ShoppingItemModel[]
 }
 
 export enum Payment {

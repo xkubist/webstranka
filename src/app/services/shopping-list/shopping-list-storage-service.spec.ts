@@ -1,11 +1,11 @@
 import {inject, TestBed} from "@angular/core/testing";
 import {ShoppingListStorageService} from "./shopping-list-storage-service";
-import {ShoppingItem} from "../ckeckout/models/shopping-item.model";
+import {ShoppingItemModel} from "../../checkout/models/shopping-item.model";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 const SHOPPING_LIST_WEB_ADDRESS = 'https://webstranka-45787-default-rtdb.europe-west1.firebasedatabase.app/shoppingList.json';
 
-const SAMPLE_SHOPPING_LIST: ShoppingItem[] = [
+const SAMPLE_SHOPPING_LIST: ShoppingItemModel[] = [
   {
     bottle: {
       id: 1,

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BottlesService} from "./shop/bottles.service";
-import {ShoppingListService} from "./shopping-list/shopping-list.service";
+import {BottlesService} from "./services/shop/bottles.service";
+import {ShoppingListService} from "./services/shopping-list/shopping-list.service";
 
 @Component({
   selector: 'app-root',

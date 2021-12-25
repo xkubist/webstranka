@@ -1,6 +1,6 @@
 import {inject, TestBed} from "@angular/core/testing";
 import {OrderStorageService} from "./order.storage.service";
-import {Delivery, Order, Payment} from "./models/order.model";
+import {Delivery, Order, Payment} from "../../checkout/models/order";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 const SAMPLE_ORDER: Order = {

@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Bottle} from "../../shared/models/bottle.model";
-import {BottlesService} from "../bottles.service";
+import {BottlesService} from "../../services/shop/bottles.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject, takeUntil} from "rxjs";
+import {ShoppingListService} from "../../services/shopping-list/shopping-list.service";
 
 @Component({
   selector: 'app-edit-modal',
@@ -19,11 +20,11 @@ export class EditModalComponent implements OnInit, OnDestroy {
   form: FormGroup;
   unsub: Subject<void>;
 
-  constructor(private fb: FormBuilder, private bottleService: BottlesService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private bottleService: BottlesService, private shoppingListService: ShoppingListService, private route: ActivatedRoute, private router: Router) {
     this.form = this.fb.group({
       bottleName: ['', Validators.required],
       description: ['', Validators.required],
-      price: ['', Validators.required],
+      price: [0, Validators.required],
       imagePath: ['', Validators.required]
     })
     this.unsub = new Subject();
@@ -31,10 +32,12 @@ export class EditModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.unsub)).subscribe((p) => {
-      this.bottleId = +p['id'];
       this.editMode = p['id'] != null;
+      if(this.editMode) {
+        this.bottleId = +p['id'];
+      }
     });
-    this.bottleService.bottlesReady$.pipe(takeUntil(this.unsub)).subscribe(() => {
+    this.bottleService.bottlesReady.pipe(takeUntil(this.unsub)).subscribe(() => {
       if (this.editMode) {
         this.bottle = this.bottleService.bottles.find(s => s.id === this.bottleId) ?? new Bottle();
         this.loadForm(this.bottle);
@@ -48,11 +51,12 @@ export class EditModalComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       this.bottle.id = this.bottleId;
       this.bottleService.updateBottle(this.bottle);
+      this.shoppingListService.updateBottle(this.bottle);
     } else {
       this.bottleService.pushBottle(this.bottle);
     }
     this.bottleService.saveBottles();
-    this.router.navigate(['create'], {relativeTo: this.route});
+    this.router.navigate(['browse']);
   }
 
   ngOnDestroy() {
