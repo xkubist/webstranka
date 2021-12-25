@@ -12,7 +12,7 @@ export class ShoppingListStorageService {
   }
 
   storeShoppingList(cart: ShoppingItemModel[]) {
-    this.http.put(shoppingListStorageEnvironment.apiUrl, cart).subscribe();
+    lastValueFrom(this.http.put(shoppingListStorageEnvironment.apiUrl, cart));
   }
 
   fetchShoppingList(): Promise<ShoppingItemModel[]> {

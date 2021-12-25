@@ -39,6 +39,7 @@ export class CheckoutComponent implements OnInit {
     this.orderService.order=this.form.value
     this.orderService.order.shoppingCart=this.shoppingList;
     this.orderService.storeOrder();
+    alert('Order Has Ben Sent');
   }
 
   onNgDestroy(): void{

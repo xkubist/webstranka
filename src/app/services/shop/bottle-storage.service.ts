@@ -13,7 +13,7 @@ export class BottleStorageService{
   constructor(private http:HttpClient) {}
 
   storeBottles(bottles: Bottle[]): void {
-    this.http.put(bottleStorageEnvironment.apiUrl, bottles).subscribe();
+    lastValueFrom(this.http.put(bottleStorageEnvironment.apiUrl, bottles));
   }
 
   fetchBottles(): Promise<Bottle[]> {

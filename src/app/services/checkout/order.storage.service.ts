@@ -11,11 +11,7 @@ export class OrderStorageService {
   constructor(private http: HttpClient) {
   }
   storeOrder(order: Order) {
-    this.http.put(orderStorageEnvironment.apiUrl, order).subscribe(
-      res => console.log('HTTP response', res),
-      err => console.log('HTTP Error', err),
-      () => console.log('HTTP request completed.')
-    )
+    lastValueFrom(this.http.put(orderStorageEnvironment.apiUrl, order));
   }
 
   fetchOrder(): Promise<Order> {
