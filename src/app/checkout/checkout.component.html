@@ -1,14 +1,16 @@
 <div class="container">
   <div class="row my-0 mx-auto">
-    <div class="col-sm-10">
+    <div class="col-10">
       <form class="m-3" [formGroup]="form">
-        <div class="container-fluid my-3 p-3">
+        <div class="my-3 p-3">
           <div>
             Osobne udaje:
           </div>
           <div class="form-group row my-3">
-            <label class="col-sm-2 col-form-label" for="name">Meno</label>
-            <div class="col-sm-10">
+            <div class="col-2">
+              <label for="name">Meno</label>
+            </div>
+            <div class="col-10">
               <input
                 class="form-control"
                 type="text"
@@ -18,8 +20,10 @@
           </div>
 
           <div class="form-group row my-3">
-            <label class="col-sm-2 col-form-label" for="email">Email</label>
-            <div class="col-sm-10">
+            <div class="col-2">
+              <label for="email">Email</label>
+            </div>
+            <div class="col-10">
               <input
                 class="form-control"
                 type="text"
@@ -30,8 +34,10 @@
           </div>
 
           <div class="form-group row my-3">
-            <label class="col-sm-2 col-form-label" for="phone">Telefon</label>
-            <div class="col-sm-10">
+            <div class="col-2">
+              <label for="phone">Telefon</label>
+            </div>
+            <div class="col-10">
               <input
                 class="form-control"
                 type="tel"
@@ -42,45 +48,35 @@
           </div>
         </div>
 
-        <div class="container-fluid my-3 p-3">
-          <div class="form-group row">
-            <label class="col-sm-12 col-form-label text-left" for="description">Spusob dodani</label>
-            <div class="col-sm-12">
-              <app-delivery formControlName="delivery" id=description></app-delivery>
-            </div>
+        <div class="my-3 p-3">
+          <div class="form-group">
+            <label for="description">Spusob dodani</label>
+            <app-delivery formControlName="delivery" id=description></app-delivery>
           </div>
         </div>
 
-        <div class="container-fluid my-3 p-3">
-          <div class="form-group row">
-            <label class="col-sm-12 col-form-label text-left" for="payment">Spusob platby</label>
-            <div class="col-sm-12">
-              <app-payment formControlName="payment" id=payment></app-payment>
-            </div>
+        <div class="my-3 p-3">
+          <div class="form-group">
+            <label for="payment">Spusob platby</label>
+            <app-payment formControlName="payment" id=payment></app-payment>
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="col-sm-12">
-            <button type="button"
-                    class="btn btn-primary float-end"
-                    (click)="onSubmit()"
-                    [disabled]="!form.valid">
-              Finnish
-            </button>
-          </div>
+        <div class="form-group">
+          <button type="button"
+                  class="btn btn-primary float-end"
+                  (click)="onSubmit()"
+                  [disabled]="!form.valid">
+            Finnish
+          </button>
         </div>
       </form>
     </div>
 
     <div class="col-sm-2">
-      <div class="container-fluid my-3 px-3 py-5 text-center">
-        <div class="row">
-          <div class="col-sm-12">
-            <div>
-              Konecna suma: {{total}}
-            </div>
-          </div>
+      <div class="my-3 px-3 py-5 text-center">
+        <div>
+          Konecna suma: {{total}}
         </div>
       </div>
     </div>

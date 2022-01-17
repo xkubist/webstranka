@@ -5,7 +5,7 @@
 <ng-template #shoppingCartElement>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 col-md-10 col-md-offset-1">
+      <div class="col-12">
         <form [formGroup]="bottlesForm">
           <table class="table table-hover">
             <thead>
@@ -22,7 +22,7 @@
               <ng-container *ngFor="let shoppingItem of shoppingListService.shoppingList, let i = index">
                 <ng-container [formGroupName]="i">
                   <tr>
-                    <td class="col-sm-8 col-md-6">
+                    <td>
                       <div class="media">
                         <a class="thumbnail pull-left" href="#"> <img class="media-object"
                                                                       [src]="shoppingItem.bottle.imagePath"
@@ -32,17 +32,21 @@
                         </div>
                       </div>
                     </td>
-                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                    <td style="text-align: center">
+                      <div class="row justify-content-center">
+                        <div class="col-6">
                       <input type="number"
                              class="form-control"
                              id="amount"
                              formControlName="amount">
+                        </div>
+                      </div>
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{shoppingItem.bottle.price}}Kč</strong></td>
-                    <td class="col-sm-1 col-md-1 text-center">
+                    <td class="text-center"><strong>{{shoppingItem.bottle.price}}Kč</strong></td>
+                    <td class="text-center">
                       <strong>{{shoppingItem.bottle.price * shoppingItem.amount}}Kč</strong></td>
-                    <td class="col-sm-1 col-md-1">
-                      <button type="button" class="btn btn-danger" (click)="removeShoppingItem(i)">
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="removeShoppingItem(i)">
                         <span class="glyphicon glyphicon-remove"></span> Remove
                       </button>
                     </td>
@@ -69,7 +73,7 @@
               <td>  </td>
               <td>  </td>
               <td>
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-primary">
                   <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
                 </button>
               </td>

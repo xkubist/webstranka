@@ -2,7 +2,9 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {lastValueFrom} from "rxjs";
 import {ShoppingItemModel} from "../../checkout/models/shopping-item.model";
-import {shoppingListStorageEnvironment} from "../../../environments/environment";
+import {shoppingListStorageEnvironment} from "src/environments/environment";
+
+
 
 @Injectable({
   providedIn: 'root'

@@ -1,32 +1,38 @@
-<div class="row">
-  <div class="col-sm-12">
-    <form [formGroup]="form">
-      <div class="form-check row">
-        <div class="col-sm-2">
-          <input
-            class="form-check-input"
-            type="radio"
-            id="ppl"
-            formControlName="delivery"
-            value="ppl"
-            (click)="select('ppl')">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <form [formGroup]="form">
+        <div class="form-check row">
+          <div class="col-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="ppl"
+              formControlName="delivery"
+              value="ppl"
+              (click)="select('ppl')">
+          </div>
+          <div class="col-10">
+            <label class="form-check-label" for="ppl">PPL</label>
+          </div>
         </div>
-        <label class="col-sm-8 form-check-label" for="ppl">PPL</label>
-      </div>
 
-      <div class="form-check row">
-        <div class="col-sm-2">
-          <input
-            class="form-check-input"
-            type="radio"
-            id="personal"
-            formControlName="delivery"
-            value="personal"
-            (click)="select('personal')">
+        <div class="form-check row">
+          <div class="col-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="personal"
+              formControlName="delivery"
+              value="personal"
+              (click)="select('personal')">
+          </div>
+          <div class="col-2">
+            <label class="form-check-label text-left" for="personal">Osobni odber</label>
+          </div>
         </div>
-        <label class="col-sm-8 form-check-label text-left" for="personal">Osobni odber</label>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 

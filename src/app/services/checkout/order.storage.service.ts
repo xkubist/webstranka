@@ -2,7 +2,8 @@ import {Injectable} from "@angular/core";
 import {lastValueFrom} from "rxjs";
 import {Order} from "../../checkout/models/order";
 import {HttpClient} from "@angular/common/http";
-import {orderStorageEnvironment} from "../../../environments/environment";
+import { orderStorageEnvironment } from "src/environments/environment";
+
 
 @Injectable({
   providedIn: 'root'

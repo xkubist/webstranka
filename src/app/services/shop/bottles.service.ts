@@ -1,7 +1,7 @@
 import {Bottle} from "../../shared/models/bottle.model";
 import {Injectable} from "@angular/core";
 import {BottleStorageService} from "./bottle-storage.service";
-import {BehaviorSubject, Observable, ReplaySubject, Subject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

@@ -4,8 +4,15 @@
 </div>
 <ng-template #browseList>
   <div class="container">
+    <div class="row m-3">
+      <div class="col-12">
+        <button type="button" class="btn btn-primary" (click)="createBottle()">
+          <span class="glyphicon glyphicon-remove"></span> Create New Bottle
+        </button>
+      </div>
+    </div>
     <div class="row">
-      <div class="col-sm-12 col-md-10 col-md-offset-1">
+      <div class="col-12">
         <form [formGroup]="bottlesForm">
           <table class="table table-hover">
             <tbody>
@@ -13,9 +20,10 @@
               <ng-container *ngFor="let shoppingItem of bottleFormArrayValues, let i = index">
                 <ng-container [formGroupName]="i">
                   <tr>
-                    <td class="col-sm-8 col-md-6">
+                    <td>
                       <div class="media">
-                        <a class="thumbnail pull-left" href="#"> <img class="media-object" [src]="shoppingItem.bottle.imagePath"
+                        <a class="thumbnail pull-left" href="#"> <img class="media-object"
+                                                                      [src]="shoppingItem.bottle.imagePath"
                                                                       style="width: 72px; height: 72px;"> </a>
                         <div class="media-body">
                           <h4>{{shoppingItem.bottle.bottleName}}</h4>
@@ -25,25 +33,28 @@
                         </div>
                       </div>
                     </td>
-                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                    <td style="text-align: center">
                       <input type="number"
                              class="form-control"
                              id="amount"
                              formControlName="amount">
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{shoppingItem.bottle.price}}Kč</strong></td>
-                    <td class="col-sm-1 col-md-1">
-                      <button type="button" class="btn btn-danger" (click)="addToCart(shoppingItem)">
+                    <td class="text-center"><strong>{{shoppingItem.bottle.price}}Kč</strong></td>
+                    <td>
+                      <button type="button" class="btn btn-primary btn-lg btn-block"
+                              (click)="addToCart(shoppingItem)">
                         <span class="glyphicon glyphicon-remove"></span> Add to cart
                       </button>
                     </td>
-                    <td class="col-sm-1 col-md-1">
-                      <button type="button" class="btn btn-danger" (click)="editBottle(shoppingItem.bottle.id)">
+                    <td>
+                      <button type="button" class="btn btn-primary btn-lg btn-block"
+                              (click)="editBottle(shoppingItem.bottle.id)">
                         <span class="glyphicon glyphicon-remove"></span> Edit Bottle
                       </button>
                     </td>
-                    <td class="col-sm-1 col-md-1">
-                      <button type="button" class="btn btn-danger" (click)="deleteBottle(shoppingItem.bottle)">
+                    <td>
+                      <button type="button" class="btn btn-primary btn-lg btn-block"
+                              (click)="deleteBottle(shoppingItem.bottle)">
                         <span class="glyphicon glyphicon-remove"></span> Delete Bottle
                       </button>
                     </td>
@@ -54,11 +65,6 @@
             </tbody>
           </table>
         </form>
-      </div>
-      <div class="col-sm-12 col-md-10 col-md-offset-1">
-        <button type="button" class="btn btn-danger" (click)="createBottle()">
-          <span class="glyphicon glyphicon-remove"></span> Create New Bottle
-        </button>
       </div>
     </div>
   </div>

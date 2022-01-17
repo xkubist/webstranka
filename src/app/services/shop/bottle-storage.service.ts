@@ -2,7 +2,9 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Bottle} from "../../shared/models/bottle.model";
 import {lastValueFrom} from "rxjs";
-import {bottleStorageEnvironment} from "../../../environments/environment";
+import {bottleStorageEnvironment} from "src/environments/environment";
+
+
 
 
 @Injectable({
